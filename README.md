@@ -11,6 +11,9 @@ Link Diagrama Miro: https://miro.com/app/board/uXjVJC2ENuY=/?share_link_id=82915
 ### [Modelagem] Caso de Uso - Escolher trilha pré-definida.
 https://miro.com/app/board/uXjVJChIDBE=/?share_link_id=786603644238
 
+### [Modelagem] Criar o modelo de domínio conceitual do sistema
+https://miro.com/app/board/uXjVJ8uKHH0=/
+
 ## Como configurar o ambiente e rodar o projeto
 
 ### 1. Criar o ambiente virtual
