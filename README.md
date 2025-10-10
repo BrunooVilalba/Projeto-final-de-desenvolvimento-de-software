@@ -14,6 +14,9 @@ https://miro.com/app/board/uXjVJChIDBE=/?share_link_id=786603644238
 ### [Modelagem] Criar o modelo de domínio conceitual do sistema
 https://miro.com/app/board/uXjVJ8uKHH0=/
 
+###[Modelagem] Criar o diagrama de conceitual (UML)
+https://miro.com/welcomeonboard/ZmdkVkE5a1FsRzREa1krbGxweE1EUkZvMndwRkFmSStVNEVNVHFJdTZ3bUVaemEwR3kweVJmZXIwWElQTGZETWFjaEFFMVhPb0cwOHB3Z1QvOXRwSG5wdWFkdEI4ejVvN3p4di9SVFF4eWY1UDVFWTlpMGROeGNEbG1mUTk4WDdBS2NFMDFkcUNFSnM0d3FEN050ekl3PT0hdjE=?share_link_id=60071469457
+
 ## Como configurar o ambiente e rodar o projeto
 
 ### 1. Criar o ambiente virtual
