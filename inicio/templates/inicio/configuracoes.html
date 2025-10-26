@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurações - ESTUDA A.I</title>
+    <link rel="stylesheet" href="{% static 'inicio/css/styles3.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">ESTUDA A.I</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'homepage' %}">Voltar</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2>Configurações</h2>
+    <p>Aqui você pode atualizar suas preferências (placeholder).</p>
+
+    <!-- Exemplo simples: mostrar nome do usuário se autenticado -->
+    {% if user.is_authenticated %}
+        <p>Olá, <strong>{{ user.username }}</strong></p>
+    {% else %}
+        <p>Você não está autenticado.</p>
+    {% endif %}
+
+    <!-- Pequeno formulário de demonstração (não persiste alterações) -->
+    <form method="post" action="#">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="pref1" class="form-label">Preferência 1</label>
+            <input id="pref1" name="pref1" class="form-control" placeholder="Ex: Notificações ativadas">
+        </div>
+        <button class="btn btn-primary" type="submit">Salvar (demo)</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'inicio/java/script.js' %}"></script>
+</body>
+</html>

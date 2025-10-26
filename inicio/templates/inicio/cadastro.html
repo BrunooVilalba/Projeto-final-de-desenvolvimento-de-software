@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="{% static 'inicio/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Cadastre-se</h1>
+                <p class="card-description">Preencha os campos abaixo para criar sua conta</p>
+            </div>
+            
+            <div class="card-content">
+                <form id="signupForm" class="form" method="post" action="{% url 'cadastro' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Alert de erro -->
+                    <div id="errorAlert" class="alert alert-error" style="display: none;">
+                        <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span id="errorMessage"></span>
+                    </div>
+                    
+                    <!-- Nome de Usuário -->
+                    <div class="form-group">
+                        <label for="username" class="form-label">Nome de usuário</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4"></circle>
+                                <path d="M5.5 21a8.38 8.38 0 0 1 13 0"></path>
+                            </svg>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                class="form-input" 
+                                placeholder="Seu nome de usuário" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">E-mail</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="seu@email.com" 
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Senha -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Senha</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Digite sua senha" 
+                                required
+                            >
+                            <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar senha">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg id="eyeOffIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <line x1="2" y1="2" x2="22" y2="22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirmar Senha -->
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">Confirmar senha</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="confirm_password" 
+                                name="confirm_password" 
+                                class="form-input" 
+                                placeholder="Repita sua senha" 
+                                required
+                            >
+                            <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Mostrar senha">
+                                <svg id="eyeConfirmIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg id="eyeOffConfirmIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <line x1="2" y1="2" x2="22" y2="22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Botão de Cadastro -->
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span id="btnText">Cadastrar</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card-footer">
+                <div class="divider">
+                    <span class="divider-text">Ou</span>
+                </div>
+                <p class="signup-text">
+                    Já tem uma conta? <a href="/" class="signup-link">Entrar</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar/ocultar senha
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+        togglePassword.addEventListener('click', () => {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeOffIcon = document.getElementById('eyeOffIcon');
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+            eyeIcon.style.display = isHidden ? 'none' : 'inline';
+            eyeOffIcon.style.display = isHidden ? 'inline' : 'none';
+        });
+
+        toggleConfirmPassword.addEventListener('click', () => {
+            const confirmInput = document.getElementById('confirm_password');
+            const eyeConfirmIcon = document.getElementById('eyeConfirmIcon');
+            const eyeOffConfirmIcon = document.getElementById('eyeOffConfirmIcon');
+            const isHidden = confirmInput.type === 'password';
+            confirmInput.type = isHidden ? 'text' : 'password';
+            eyeConfirmIcon.style.display = isHidden ? 'none' : 'inline';
+            eyeOffConfirmIcon.style.display = isHidden ? 'inline' : 'none';
+        });
+    </script>
+
+</body>
+</html>
