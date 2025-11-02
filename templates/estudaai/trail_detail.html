@@ -1,0 +1,168 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+{% load estudaai_extras %}
+
+{% block title %}{{ trail.title }} - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Trail Header -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-custom-lg">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge badge-danger me-3">{{ trail.get_difficulty_display }}</span>
+                                <span class="badge bg-light text-dark me-3">
+                                    <i class="fas fa-clock me-1"></i>{{ trail.estimated_hours }}h
+                                </span>
+                                <span class="badge bg-light text-dark">
+                                    <i class="fas fa-list me-1"></i>{{ trail.steps.count }} etapas
+                                </span>
+                            </div>
+                            <h1 class="display-6 fw-bold text-dark mb-3">{{ trail.title }}</h1>
+                            <p class="lead text-muted mb-4">{{ trail.description }}</p>
+                            
+                            <!-- Progress Bar (se inscrito) -->
+                            {% if user.is_authenticated and progress_percentage > 0 %}
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-dark mb-0">Seu Progresso</h6>
+                                    <span class="fw-bold text-danger">{{ progress_percentage }}%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar" style="width: {{ progress_percentage }}%"></div>
+                                </div>
+                                <small class="text-muted">
+                                    {{ completed_steps }} de {{ total_steps }} etapas concluídas
+                                </small>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="d-flex flex-wrap gap-3">
+                                {% if user.is_authenticated %}
+                                    {% if progress_percentage > 0 %}
+                                        <a href="{% url 'my_trails' %}" class="btn btn-danger btn-lg fw-bold">
+                                            <i class="fas fa-play me-2"></i>Continuar Trilha
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'enroll_trail' trail.id %}" class="btn btn-danger btn-lg fw-bold">
+                                            <i class="fas fa-plus me-2"></i>Inscrever-se
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'login' %}?next={% url 'trail_detail' trail.id %}" class="btn btn-danger btn-lg fw-bold">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Fazer Login para Inscrever-se
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'trail_list' %}" class="btn btn-outline-danger btn-lg fw-bold">
+                                    <i class="fas fa-arrow-left me-2"></i>Voltar às Trilhas
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="bg-danger-custom text-white rounded-4 p-4">
+                                <i class="fas fa-graduation-cap" style="font-size: 4rem;"></i>
+                                <h5 class="fw-bold mt-3 mb-2">{{ trail.category.name }}</h5>
+                                <p class="mb-0 opacity-75">Categoria</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trail Steps -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="fw-bold text-dark mb-4">
+                <i class="fas fa-list-ol text-danger-custom me-2"></i>Etapas da Trilha
+            </h3>
+            
+            {% if steps %}
+                <div class="row g-4">
+                    {% for step in steps %}
+                    <div class="col-12">
+                        <div class="step-item {% if user_progress|lookup:step.id and user_progress|lookup:step.id.completed %}completed{% endif %}">
+                            <div class="d-flex align-items-start">
+                                <div class="step-number">{{ step.order }}</div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="fw-bold text-dark mb-2">{{ step.title }}</h5>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i>{{ step.estimated_hours }}h
+                                            </small>
+                                            {% if step.is_optional %}
+                                            <span class="badge bg-warning text-dark">Opcional</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-3">{{ step.description }}</p>
+                                    
+                                    {% if step.resources %}
+                                    <div class="mb-3">
+                                        <h6 class="fw-bold text-dark mb-2">
+                                            <i class="fas fa-bookmark text-danger-custom me-1"></i>Recursos
+                                        </h6>
+                                        <ul class="list-unstyled">
+                                            {% for resource in step.resources %}
+                                            <li class="mb-1">
+                                                <i class="fas fa-external-link-alt text-muted me-2"></i>
+                                                <a href="{{ resource }}" target="_blank" class="text-decoration-none">{{ resource }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if user.is_authenticated and progress_percentage > 0 %}
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            {% if user_progress|lookup:step.id and user_progress|lookup:step.id.completed %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Concluída
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-light text-dark">
+                                                    <i class="fas fa-clock me-1"></i>Pendente
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        <form method="post" action="{% url 'mark_step_complete' step.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="completed" value="{% if user_progress|lookup:step.id and user_progress|lookup:step.id.completed %}false{% else %}true{% endif %}">
+                                            <button type="submit" class="btn btn-sm {% if user_progress|lookup:step.id and user_progress|lookup:step.id.completed %}btn-outline-danger{% else %}btn-danger{% endif %} fw-bold">
+                                                {% if user_progress|lookup:step.id and user_progress|lookup:step.id.completed %}
+                                                    <i class="fas fa-undo me-1"></i>Desmarcar
+                                                {% else %}
+                                                    <i class="fas fa-check me-1"></i>Marcar como Concluída
+                                                {% endif %}
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card border-0 shadow-custom text-center">
+                    <div class="card-body p-5">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                            <i class="fas fa-list text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark mb-3">Nenhuma etapa encontrada</h4>
+                        <p class="text-muted">Esta trilha ainda não possui etapas definidas.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

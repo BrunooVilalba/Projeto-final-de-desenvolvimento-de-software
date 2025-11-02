@@ -1,0 +1,84 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Category Header -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-{{ category.icon|default:'book' }} fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h1 class="h2 mb-2">{{ category.name }}</h1>
+                                    <span class="badge bg-info">{{ trails.count }} trilha{{ trails.count|pluralize }}</span>
+                                </div>
+                            </div>
+                            <p class="lead text-muted">{{ category.description }}</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <a href="{% url 'category_list' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Voltar às Categorias
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trails -->
+    <div class="row">
+        <div class="col-12">
+            {% if trails %}
+            <div class="row g-4">
+                {% for trail in trails %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-{{ trail.difficulty|default:'secondary' }}">{{ trail.get_difficulty_display }}</span>
+                                <small class="text-muted">{{ trail.estimated_hours }}h</small>
+                            </div>
+                            
+                            <h5 class="card-title">{{ trail.title }}</h5>
+                            <p class="card-text text-muted">{{ trail.description|truncatewords:20 }}</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-list-ol me-1"></i>{{ trail.total_steps }} etapas
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ category.name }}</small>
+                                <a href="{% url 'trail_detail' trail.id %}" class="btn btn-primary btn-sm">
+                                    Ver Detalhes <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-list text-muted fa-4x mb-4"></i>
+                <h3 class="text-muted">Nenhuma trilha encontrada</h3>
+                <p class="text-muted">Esta categoria ainda não possui trilhas disponíveis.</p>
+                <a href="{% url 'trail_list' %}" class="btn btn-primary">
+                    <i class="fas fa-list me-2"></i>Ver Todas as Trilhas
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

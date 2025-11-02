@@ -1,0 +1,26 @@
+# Copy this file to terraform.tfvars and fill in your values
+
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Application Configuration
+container_image = "estudaai:latest"
+environment    = "production"
+project_name   = "estudaai"
+
+# Database Configuration
+db_password = "your-secure-database-password"
+
+# Django Configuration
+secret_key = "your-django-secret-key"
+
+# OpenAI Configuration
+openai_api_key = "your-openai-api-key"
+
+# Tags
+tags = {
+  Project     = "estudaai"
+  Environment = "production"
+  ManagedBy   = "terraform"
+  Owner       = "estudaai-team"
+}

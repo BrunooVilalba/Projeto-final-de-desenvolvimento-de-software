@@ -1,0 +1,36 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Criar usuário não-root
+RUN adduser --disabled-password --gecos '' appuser
+
+# Copiar requirements e instalar dependências Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
+
+# Copiar código da aplicação
+COPY . .
+
+# Criar diretórios necessários
+RUN mkdir -p static staticfiles media
+RUN chown -R appuser:appuser /app
+
+# Mudar para usuário não-root
+USER appuser
+
+# Coletar arquivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Expor porta
+EXPOSE 8000
+
+# Comando padrão
+CMD ["gunicorn", "mysite.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]

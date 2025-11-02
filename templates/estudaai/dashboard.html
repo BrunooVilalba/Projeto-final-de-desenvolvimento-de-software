@@ -1,0 +1,182 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-custom" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                <div class="card-body p-4 text-white">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="fw-bold mb-2">
+                                Olá, {{ user.first_name|default:user.username }}! 👋
+                            </h2>
+                            <p class="mb-0 opacity-75">
+                                Pronto para continuar sua jornada de aprendizado? Vamos ver o que você tem em andamento.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <div class="bg-white bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-graduation-cap" style="font-size: 2.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ enrolled_trails.count }}</div>
+                <div class="stat-label">Trilhas Inscritas</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ completed_steps }}</div>
+                <div class="stat-label">Etapas Concluídas</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_steps }}</div>
+                <div class="stat-label">Total de Etapas</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ progress_percentage }}%</div>
+                <div class="stat-label">Progresso Geral</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h4 class="fw-bold text-dark mb-4">Ações Rápidas</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="{% url 'trail_list' %}" class="card text-decoration-none h-100 border-0 shadow-custom">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-danger-custom text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-book" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-2">Explorar Trilhas</h6>
+                            <p class="text-muted small mb-0">Descubra novas trilhas de estudo</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'create_custom_trail' %}" class="card text-decoration-none h-100 border-0 shadow-custom">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-danger-custom text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-robot" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-2">Criar Trilha IA</h6>
+                            <p class="text-muted small mb-0">Trilha personalizada com IA</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'ai_chat' %}" class="card text-decoration-none h-100 border-0 shadow-custom">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-danger-custom text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-comments" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-2">Chat com IA</h6>
+                            <p class="text-muted small mb-0">Tire suas dúvidas</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrolled Trails -->
+    {% if enrolled_trails %}
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark mb-0">Suas Trilhas em Andamento</h4>
+                <a href="{% url 'my_trails' %}" class="btn btn-outline-danger fw-bold">
+                    Ver Todas
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+            
+            <div class="row g-4">
+                {% for trail in enrolled_trails %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 trail-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge badge-danger">{{ trail.get_difficulty_display }}</span>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>{{ trail.estimated_hours }}h
+                                </small>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-3">{{ trail.title }}</h5>
+                            <p class="text-muted mb-4">{{ trail.description|truncatewords:15 }}</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="text-muted fw-medium">Progresso</small>
+                                    <small class="text-muted fw-medium">{{ trail.progress_percentage }}%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ trail.progress_percentage }}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-list me-1"></i>{{ trail.completed_steps }}/{{ trail.total_steps }} etapas
+                                </small>
+                                <a href="{% url 'trail_detail' trail.id %}" class="btn btn-outline-danger btn-sm fw-bold">
+                                    Continuar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-custom text-center">
+                <div class="card-body p-5">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                        <i class="fas fa-book-open text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-3">Nenhuma trilha em andamento</h4>
+                    <p class="text-muted mb-4">
+                        Que tal começar uma nova trilha de estudos? Explore nossas opções ou crie uma personalizada com IA.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'trail_list' %}" class="btn btn-danger fw-bold">
+                            <i class="fas fa-book me-2"></i>Explorar Trilhas
+                        </a>
+                        <a href="{% url 'create_custom_trail' %}" class="btn btn-outline-danger fw-bold">
+                            <i class="fas fa-robot me-2"></i>Criar com IA
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

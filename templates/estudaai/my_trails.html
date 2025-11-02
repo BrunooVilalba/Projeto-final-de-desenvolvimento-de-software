@@ -1,0 +1,130 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}Minhas Trilhas - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 mb-2">Minhas Trilhas</h1>
+                    <p class="text-muted">Acompanhe seu progresso em todas as trilhas</p>
+                </div>
+                <a href="{% url 'trail_list' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Explorar Novas Trilhas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trilhas em Progresso -->
+    {% if trails_in_progress %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3">
+                <i class="fas fa-play text-primary me-2"></i>Trilhas em Progresso
+            </h3>
+            <div class="row g-4">
+                {% for trail in trails_in_progress %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-{{ trail.difficulty|default:'secondary' }}">{{ trail.get_difficulty_display }}</span>
+                                <small class="text-muted">{{ trail.estimated_hours }}h</small>
+                            </div>
+                            
+                            <h5 class="card-title">{{ trail.title }}</h5>
+                            <p class="card-text text-muted">{{ trail.description|truncatewords:15 }}</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-tag me-1"></i>{{ trail.category.name }}
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'trail_detail' trail.id %}" class="btn btn-primary btn-sm">
+                                    Continuar <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <small class="text-muted">
+                                    <i class="fas fa-list-ol me-1"></i>{{ trail.total_steps }} etapas
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Trilhas Concluídas -->
+    {% if completed_trails %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3">
+                <i class="fas fa-check-circle text-success me-2"></i>Trilhas Concluídas
+            </h3>
+            <div class="row g-4">
+                {% for trail in completed_trails %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-success">Concluída</span>
+                                <small class="text-muted">{{ trail.estimated_hours }}h</small>
+                            </div>
+                            
+                            <h5 class="card-title">{{ trail.title }}</h5>
+                            <p class="card-text text-muted">{{ trail.description|truncatewords:15 }}</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-tag me-1"></i>{{ trail.category.name }}
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'trail_detail' trail.id %}" class="btn btn-outline-primary btn-sm">
+                                    Ver Detalhes <i class="fas fa-eye ms-1"></i>
+                                </a>
+                                <small class="text-muted">
+                                    <i class="fas fa-list-ol me-1"></i>{{ trail.total_steps }} etapas
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Empty State -->
+    {% if not trails_in_progress and not completed_trails %}
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-graduation-cap text-muted fa-4x mb-4"></i>
+                <h3 class="text-muted">Nenhuma trilha encontrada</h3>
+                <p class="text-muted mb-4">Você ainda não iniciou nenhuma trilha. Que tal explorar as trilhas disponíveis?</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'trail_list' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-list me-2"></i>Explorar Trilhas
+                    </a>
+                    <a href="{% url 'create_custom_trail' %}" class="btn btn-success btn-lg">
+                        <i class="fas fa-magic me-2"></i>Criar Trilha Personalizada
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

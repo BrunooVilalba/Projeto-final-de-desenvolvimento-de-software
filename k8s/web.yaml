@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: estudaai-web
+  namespace: estudaai
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: estudaai-web
+  template:
+    metadata:
+      labels:
+        app: estudaai-web
+    spec:
+      containers:
+      - name: estudaai-web
+        image: estudaai:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: estudaai-secret
+              key: SECRET_KEY
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: estudaai-secret
+              key: DB_PASSWORD
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: estudaai-secret
+              key: OPENAI_API_KEY
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: DEBUG
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: DB_NAME
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: REDIS_URL
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: estudaai-config
+              key: ALLOWED_HOSTS
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: estudaai-service
+  namespace: estudaai
+spec:
+  selector:
+    app: estudaai-web
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: LoadBalancer

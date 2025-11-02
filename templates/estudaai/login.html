@@ -1,0 +1,73 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}Entrar - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card ai-glow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="ai-pulse d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #00d4ff, #0099cc); border-radius: 50%;">
+                            <i class="fas fa-brain text-dark" style="font-size: 2rem;"></i>
+                        </div>
+                        <h2 class="fw-bold text-light">Bem-vindo de volta!</h2>
+                        <p class="text-secondary">Entre na sua conta para continuar aprendendo</p>
+                    </div>
+                    
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="username" class="form-label">Usuário</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   placeholder="Digite seu usuário" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Digite sua senha" required>
+                        </div>
+                        
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center">
+                        <p class="text-secondary mb-0">
+                            Não tem uma conta? 
+                            <a href="{% url 'register' %}" class="text-ai fw-bold text-decoration-none">
+                                Cadastre-se aqui
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Demo Credentials -->
+            <div class="card mt-4" style="background: var(--dark-surface); border: 1px solid var(--dark-border);">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold text-light mb-3">
+                        <i class="fas fa-info-circle text-ai me-2"></i>Credenciais de Demonstração
+                    </h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-secondary d-block">Usuário:</small>
+                            <code class="text-ai">admin</code>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-secondary d-block">Senha:</small>
+                            <code class="text-ai">admin123</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,226 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}EstudaAI - Inteligência Artificial para Aprendizado{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4 fade-in-up">
+                        Aprendizado <span class="text-ai">Inteligente</span> com IA
+                    </h1>
+                    <p class="lead mb-4 fade-in-up text-secondary" style="animation-delay: 0.2s;">
+                        Descubra trilhas de estudo personalizadas e acelere sua jornada de conhecimento com o poder da inteligência artificial.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 fade-in-up" style="animation-delay: 0.4s;">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg px-4 py-3 fw-bold">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                            <a href="{% url 'trail_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3 fw-bold">
+                                <i class="fas fa-book me-2"></i>Explorar Trilhas
+                            </a>
+                        {% else %}
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 py-3 fw-bold">
+                                <i class="fas fa-rocket me-2"></i>Começar Agora
+                            </a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-4 py-3 fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i>Fazer Login
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center fade-in-up" style="animation-delay: 0.6s;">
+                    <div class="position-relative">
+                        <div class="ai-glow bg-dark rounded-4 p-5" style="transform: rotate(3deg); border: 1px solid var(--dark-border);">
+                            <i class="fas fa-brain text-ai ai-pulse" style="font-size: 4rem;"></i>
+                            <h4 class="mt-3 fw-bold text-light">IA Personalizada</h4>
+                            <p class="text-secondary">Trilhas adaptadas para você</p>
+                        </div>
+                        <div class="position-absolute top-0 start-0 bg-warning rounded-circle p-3 ai-glow" style="transform: translate(-20px, -20px);">
+                            <i class="fas fa-robot text-dark" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 bg-success rounded-circle p-3 ai-glow" style="transform: translate(20px, 20px);">
+                            <i class="fas fa-chart-line text-dark" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-light mb-3">Por que escolher o EstudaAI?</h2>
+                <p class="lead text-secondary">
+                    Nossa plataforma combina tecnologia de ponta com metodologias pedagógicas comprovadas
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center ai-glow-hover">
+                    <div class="card-body p-4">
+                        <div class="ai-glow text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #00d4ff, #0099cc);">
+                            <i class="fas fa-robot" style="font-size: 2rem;"></i>
+                        </div>
+                        <h5 class="fw-bold text-light mb-3">IA Personalizada</h5>
+                        <p class="text-secondary">
+                            Trilhas de estudo criadas especificamente para seus objetivos e nível de conhecimento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center ai-glow-hover">
+                    <div class="card-body p-4">
+                        <div class="ai-glow text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #00d4ff, #0099cc);">
+                            <i class="fas fa-chart-line" style="font-size: 2rem;"></i>
+                        </div>
+                        <h5 class="fw-bold text-light mb-3">Acompanhamento Inteligente</h5>
+                        <p class="text-secondary">
+                            Monitore seu desenvolvimento com métricas detalhadas e relatórios visuais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center ai-glow-hover">
+                    <div class="card-body p-4">
+                        <div class="ai-glow text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #00d4ff, #0099cc);">
+                            <i class="fas fa-users" style="font-size: 2rem;"></i>
+                        </div>
+                        <h5 class="fw-bold text-light mb-3">Comunidade Ativa</h5>
+                        <p class="text-secondary">
+                            Conecte-se com outros estudantes e compartilhe experiências de aprendizado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+{% if categories %}
+<section class="py-5" style="background: var(--dark-surface);">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-light mb-3">Categorias de Estudo</h2>
+                <p class="lead text-secondary">
+                    Explore nossas categorias especializadas e encontre a trilha perfeita para você
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for category in categories %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 trail-card ai-glow-hover">
+                    <div class="card-body text-center">
+                        <div class="ai-glow text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #00d4ff, #0099cc);">
+                            <i class="fas fa-{{ category.icon|default:'book' }}" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h5 class="fw-bold text-light mb-3">{{ category.name }}</h5>
+                        <p class="text-secondary mb-4">{{ category.description|truncatewords:20 }}</p>
+                        <a href="{% url 'category_detail' category.id %}" class="btn btn-outline-primary fw-bold">
+                            Explorar Trilhas
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Trails Section -->
+{% if featured_trails %}
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-light mb-3">Trilhas em Destaque</h2>
+                <p class="lead text-secondary">
+                    As trilhas mais populares e recomendadas pelos nossos especialistas
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for trail in featured_trails %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 trail-card ai-glow-hover">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge badge-primary">{{ trail.get_difficulty_display }}</span>
+                            <small class="text-secondary">
+                                <i class="fas fa-clock me-1"></i>{{ trail.estimated_hours }}h
+                            </small>
+                        </div>
+                        <h5 class="fw-bold text-light mb-3">{{ trail.title }}</h5>
+                        <p class="text-secondary mb-4">{{ trail.description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">
+                                <i class="fas fa-list me-1"></i>{{ trail.steps.count }} etapas
+                            </small>
+                            <a href="{% url 'trail_detail' trail.id %}" class="btn btn-outline-primary btn-sm fw-bold">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'trail_list' %}" class="btn btn-primary btn-lg px-5 py-3 fw-bold">
+                <i class="fas fa-book me-2"></i>Ver Todas as Trilhas
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #00d4ff, #0099cc);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="display-6 fw-bold text-dark mb-3">Pronto para começar sua jornada de aprendizado?</h2>
+                <p class="lead mb-0 text-dark">
+                    Junte-se a milhares de estudantes que já transformaram sua forma de estudar com o EstudaAI.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-dark btn-lg px-5 py-3 fw-bold">
+                        <i class="fas fa-rocket me-2"></i>Começar Agora
+                    </a>
+                {% else %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-dark btn-lg px-5 py-3 fw-bold">
+                        <i class="fas fa-tachometer-alt me-2"></i>Ir para Dashboard
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

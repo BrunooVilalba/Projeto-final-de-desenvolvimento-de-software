@@ -1,0 +1,65 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}Categorias - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold mb-3">Categorias de Conhecimento</h1>
+            <p class="lead text-muted">Explore trilhas organizadas por área de especialização</p>
+        </div>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="row g-4">
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-{{ category.icon|default:'book' }} fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">{{ category.name }}</h4>
+                    </div>
+                    
+                    <p class="card-text text-muted text-center mb-4">{{ category.description }}</p>
+                    
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <span class="badge bg-info">{{ category.trail_count }} trilha{{ category.trail_count|pluralize }}</span>
+                        </div>
+                        <a href="{% url 'category_detail' category.id %}" class="btn btn-outline-primary">
+                            Ver Trilhas <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-folder-open text-muted fa-4x mb-4"></i>
+                <h3 class="text-muted">Nenhuma categoria encontrada</h3>
+                <p class="text-muted">Não há categorias disponíveis no momento.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

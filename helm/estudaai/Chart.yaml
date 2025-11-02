@@ -1,0 +1,26 @@
+apiVersion: v2
+name: estudaai
+description: A Helm chart for EstudaAI - Sistema de Recomendação de Trilhas de Aprendizagem
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - education
+  - learning
+  - ai
+  - django
+home: https://github.com/estudaai/estudaai
+sources:
+  - https://github.com/estudaai/estudaai
+maintainers:
+  - name: EstudaAI Team
+    email: team@estudaai.com
+dependencies:
+  - name: postgresql
+    version: 12.1.2
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 17.3.7
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

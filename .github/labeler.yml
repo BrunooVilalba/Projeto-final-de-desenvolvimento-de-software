@@ -1,0 +1,118 @@
+# Labeler configuration for EstudaAI
+
+# Frontend changes
+frontend:
+  - 'static/**'
+  - 'templates/**'
+  - '*.css'
+  - '*.js'
+  - '*.html'
+
+# Backend changes
+backend:
+  - 'estudaai/**'
+  - 'mysite/**'
+  - '*.py'
+  - 'requirements.txt'
+  - 'manage.py'
+
+# Database changes
+database:
+  - '**/migrations/**'
+  - '**/models.py'
+  - '**/admin.py'
+
+# Documentation changes
+documentation:
+  - '*.md'
+  - 'docs/**'
+  - 'CHANGELOG.md'
+  - 'README.md'
+  - 'CONTRIBUTING.md'
+
+# Configuration changes
+configuration:
+  - '*.yml'
+  - '*.yaml'
+  - '*.json'
+  - '*.toml'
+  - 'Dockerfile*'
+  - 'docker-compose*.yml'
+  - 'terraform/**'
+  - 'k8s/**'
+  - 'helm/**'
+
+# CI/CD changes
+ci-cd:
+  - '.github/**'
+  - '*.yml'
+  - '*.yaml'
+
+# Security changes
+security:
+  - 'SECURITY.md'
+  - '**/security/**'
+  - '**/auth/**'
+  - '**/permissions/**'
+
+# Testing changes
+testing:
+  - '**/test*.py'
+  - '**/tests/**'
+  - 'test_*.py'
+  - 'pytest.ini'
+  - 'conftest.py'
+
+# Dependencies changes
+dependencies:
+  - 'requirements.txt'
+  - 'package.json'
+  - 'yarn.lock'
+  - 'poetry.lock'
+  - 'Pipfile'
+  - 'Pipfile.lock'
+
+# Infrastructure changes
+infrastructure:
+  - 'terraform/**'
+  - 'k8s/**'
+  - 'helm/**'
+  - 'docker-compose*.yml'
+  - 'Dockerfile*'
+
+# Bug fixes
+bug:
+  - 'fix:'
+  - 'bug:'
+  - 'hotfix:'
+
+# New features
+feature:
+  - 'feat:'
+  - 'feature:'
+  - 'enhancement:'
+
+# Breaking changes
+breaking:
+  - 'BREAKING CHANGE:'
+  - 'breaking:'
+
+# Performance improvements
+performance:
+  - 'perf:'
+  - 'performance:'
+
+# Refactoring
+refactor:
+  - 'refactor:'
+  - 'refactoring:'
+
+# Style changes
+style:
+  - 'style:'
+  - 'format:'
+
+# Chore tasks
+chore:
+  - 'chore:'
+  - 'maintenance:'

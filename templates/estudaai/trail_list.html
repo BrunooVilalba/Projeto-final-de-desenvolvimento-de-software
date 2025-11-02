@@ -1,0 +1,207 @@
+{% extends 'estudaai/base.html' %}
+{% load static %}
+
+{% block title %}Trilhas de Estudo - EstudaAI{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="text-center">
+                <h1 class="display-5 fw-bold text-dark mb-3">Trilhas de Estudo</h1>
+                <p class="lead text-muted">
+                    Descubra trilhas personalizadas para acelerar seu aprendizado
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendation Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-custom">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="fas fa-magic text-danger-custom me-2"></i>Sistema de Recomendação
+                            </h5>
+                            <div class="btn-group" role="group">
+                                <a href="?recommendation=all" 
+                                   class="btn {% if recommendation_type == 'all' %}btn-danger{% else %}btn-outline-danger{% endif %} fw-bold">
+                                    Todas
+                                </a>
+                                <a href="?recommendation=recommended" 
+                                   class="btn {% if recommendation_type == 'recommended' %}btn-danger{% else %}btn-outline-danger{% endif %} fw-bold">
+                                    <i class="fas fa-star me-1"></i>Recomendadas
+                                </a>
+                                <a href="?recommendation=popular" 
+                                   class="btn {% if recommendation_type == 'popular' %}btn-danger{% else %}btn-outline-danger{% endif %} fw-bold">
+                                    <i class="fas fa-fire me-1"></i>Populares
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <a href="{% url 'create_custom_trail' %}" class="btn btn-danger btn-lg fw-bold">
+                                <i class="fas fa-robot me-2"></i>Criar Trilha com IA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-custom">
+                <div class="card-body p-4">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-3">
+                            <label for="category" class="form-label fw-medium">Categoria</label>
+                            <select name="category" id="category" class="form-select">
+                                <option value="">Todas as categorias</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="difficulty" class="form-label fw-medium">Dificuldade</label>
+                            <select name="difficulty" id="difficulty" class="form-select">
+                                <option value="">Todas as dificuldades</option>
+                                {% for value, label in difficulties %}
+                                <option value="{{ value }}" {% if selected_difficulty == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="search" class="form-label fw-medium">Buscar</label>
+                            <input type="text" name="search" id="search" class="form-control" 
+                                   placeholder="Digite o nome da trilha..." value="{{ search_query }}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-danger fw-bold">
+                                    <i class="fas fa-search me-1"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="recommendation" value="{{ recommendation_type }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row">
+        <div class="col-12">
+            {% if trails %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold text-dark mb-0">
+                        {% if recommendation_type == 'recommended' %}
+                            <i class="fas fa-star text-warning me-2"></i>Trilhas Recomendadas para Você
+                        {% elif recommendation_type == 'popular' %}
+                            <i class="fas fa-fire text-danger me-2"></i>Trilhas Mais Populares
+                        {% else %}
+                            <i class="fas fa-book text-danger me-2"></i>Todas as Trilhas
+                        {% endif %}
+                        <span class="badge bg-danger-custom ms-2">{{ trails.count }}</span>
+                    </h4>
+                </div>
+
+                <div class="row g-4">
+                    {% for trail in trails %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 trail-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge badge-danger">{{ trail.get_difficulty_display }}</span>
+                                    <div class="d-flex align-items-center">
+                                        <small class="text-muted me-2">
+                                            <i class="fas fa-clock me-1"></i>{{ trail.estimated_hours }}h
+                                        </small>
+                                        {% if trail.is_enrolled %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>Inscrito
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <h5 class="fw-bold text-dark mb-3">{{ trail.title }}</h5>
+                                <p class="text-muted mb-4">{{ trail.description|truncatewords:20 }}</p>
+                                
+                                <!-- Progress Bar (se inscrito) -->
+                                {% if trail.is_enrolled %}
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <small class="text-muted fw-medium">Seu Progresso</small>
+                                        <small class="text-muted fw-medium">{{ trail.progress_percentage }}%</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: {{ trail.progress_percentage }}%"></div>
+                                    </div>
+                                    <small class="text-muted">
+                                        {{ trail.completed_steps }}/{{ trail.total_steps }} etapas concluídas
+                                    </small>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-list me-1"></i>{{ trail.steps.count }} etapas
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-tag me-1"></i>{{ trail.category.name }}
+                                        </small>
+                                    </div>
+                                    <a href="{% url 'trail_detail' trail.id %}" class="btn btn-outline-danger fw-bold">
+                                        {% if trail.is_enrolled %}
+                                            Continuar
+                                        {% else %}
+                                            Ver Detalhes
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="card border-0 shadow-custom text-center">
+                    <div class="card-body p-5">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                            <i class="fas fa-search text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark mb-3">Nenhuma trilha encontrada</h4>
+                        <p class="text-muted mb-4">
+                            Tente ajustar os filtros ou criar uma trilha personalizada com IA.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'trail_list' %}" class="btn btn-outline-danger fw-bold">
+                                <i class="fas fa-refresh me-2"></i>Limpar Filtros
+                            </a>
+                            <a href="{% url 'create_custom_trail' %}" class="btn btn-danger fw-bold">
+                                <i class="fas fa-robot me-2"></i>Criar com IA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
