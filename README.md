@@ -398,7 +398,7 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ## 👨‍💻 Autor
 
-Desenvolvido com ❤️ para facilitar o aprendizado personalizado.
+Desenvolvido Miqueias Saldanha.
 
 ---
 
