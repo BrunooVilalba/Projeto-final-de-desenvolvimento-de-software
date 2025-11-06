@@ -19,6 +19,8 @@
 
 O **EstudaAI** é uma plataforma completa de aprendizado personalizado que utiliza inteligência artificial (Google Gemini) para criar trilhas de aprendizagem customizadas baseadas nos objetivos e perfil do estudante. O sistema permite criar, gerenciar e acompanhar o progresso em trilhas de conhecimento estruturadas.
 
+**📝 Nota**: Todo o código está amplamente comentado de forma profissional, facilitando a compreensão e manutenção do projeto. Os testes unitários garantem a qualidade e confiabilidade do sistema.
+
 ### 🎯 Principais Funcionalidades
 
 - ✅ **Autenticação Completa**: Sistema de registro e login com JWT
@@ -92,6 +94,43 @@ npm install
 ### 4. Configuração da API Gemini (Opcional)
 
 A API key do Gemini está configurada no arquivo `services/geminiService.ts`. Para produção, configure via variável de ambiente.
+
+---
+
+## 🧪 Testes
+
+O projeto possui testes unitários completos para backend e frontend.
+
+### Executar Testes do Backend
+
+```bash
+# Executar todos os testes
+python manage.py test
+
+# Executar testes de um app específico
+python manage.py test api
+
+# Executar com verbosidade
+python manage.py test --verbosity=2
+```
+
+### Executar Testes do Frontend
+
+```bash
+# Executar todos os testes
+npm test
+
+# Executar em modo watch
+npm test -- --watch
+
+# Executar com interface gráfica
+npm run test:ui
+
+# Executar com cobertura
+npm run test:coverage
+```
+
+Para mais detalhes sobre os testes, consulte o arquivo [TESTES.md](./TESTES.md).
 
 ---
 
