@@ -3,7 +3,7 @@ import { LearningPath } from '../types';
 import { BookOpenIcon, ChevronRightIcon } from './icons/Icons';
 
 interface PathCardProps {
-  path: LearningPath;
+  path: LearningPath | Omit<LearningPath, 'progress'>;
   onSelect: () => void;
   isPredefined?: boolean;
 }
@@ -23,9 +23,21 @@ const DifficultyBadge: React.FC<{ difficulty: string }> = ({ difficulty }) => {
 };
 
 const PathCard: React.FC<PathCardProps> = ({ path, onSelect, isPredefined = false }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("PathCard clicado:", path.id, path.title);
+    if (onSelect) {
+      console.log("Chamando onSelect...");
+      onSelect();
+    } else {
+      console.warn("onSelect não está definido!");
+    }
+  };
+
   return (
     <div
-      onClick={onSelect}
+      onClick={handleClick}
       className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer group hover:shadow-red-800/20 hover:ring-2 hover:ring-red-800/50 transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between"
     >
       <div className="p-6">
@@ -41,16 +53,17 @@ const PathCard: React.FC<PathCardProps> = ({ path, onSelect, isPredefined = fals
         </div>
         <p className="mt-2 text-sm text-slate-600 line-clamp-2">{path.description}</p>
         
-        {!isPredefined && (
+        {/* Sempre mostra progresso se a trilha tiver progress definido */}
+        {'progress' in path && (path as LearningPath).progress !== undefined && (
             <div className="mt-4">
                 <div className="flex justify-between text-sm text-slate-600 mb-1">
                     <span>Progresso</span>
-                    <span>{path.progress}%</span>
+                    <span className="font-semibold">{(path as LearningPath).progress}%</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
                         className="bg-red-800 h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${path.progress}%` }}
+                        style={{ width: `${(path as LearningPath).progress}%` }}
                     ></div>
                 </div>
             </div>

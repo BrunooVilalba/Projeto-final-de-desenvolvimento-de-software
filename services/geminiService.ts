@@ -226,6 +226,100 @@ export const generateLearningPath = async (
  * );
  * console.log(recomendacoes.length); // 3
  */
+/**
+ * Gera recomendações baseadas no desempenho do usuário.
+ * 
+ * Esta função analisa o desempenho do usuário e gera novas trilhas
+ * personalizadas que complementam o aprendizado atual, considerando
+ * áreas já exploradas e próximos passos lógicos.
+ * 
+ * @param course - Área de formação do usuário
+ * @param experienceLevel - Nível de experiência atual
+ * @param performanceSummary - Resumo do desempenho do usuário
+ * @returns Promise com array de 2-3 trilhas recomendadas baseadas no desempenho
+ * 
+ * @example
+ * const newPaths = await generatePerformanceBasedRecommendations(
+ *   "Desenvolvimento",
+ *   "Intermediário",
+ *   "O usuário completou 3 trilhas de JavaScript..."
+ * );
+ */
+export const generatePerformanceBasedRecommendations = async (
+  course: string,
+  experienceLevel: User['experienceLevel'],
+  performanceSummary: string
+): Promise<Omit<LearningPath, 'id' | 'progress'>[]> => {
+  try {
+    // Prompt específico para gerar recomendações baseadas no desempenho
+    const fullPrompt = `
+      Você é um especialista em design instrucional e um mentor de carreira sênior. 
+      Sua tarefa é criar 2-3 trilhas de aprendizagem NOVAS e COMPLEMENTARES baseadas no 
+      desempenho e progresso atual do estudante.
+      
+      PERFIL DO ESTUDANTE:
+      - Área de Formação: "${course}"
+      - Nível de Experiência: "${experienceLevel}"
+      
+      DESEMPENHO E PROGRESSO:
+      ${performanceSummary}
+      
+      IMPORTANTE:
+      - As trilhas devem ser NOVAS e DIFERENTES das que o estudante já tem
+      - Devem complementar e avançar o aprendizado baseado no que já foi estudado
+      - Se o estudante já tem progresso em certas áreas, sugira trilhas que aprofundem ou expandam esses conhecimentos
+      - Se o estudante completou trilhas, sugira próximos passos lógicos e avançados
+      - As trilhas devem ser estritamente focadas em sub-áreas DENTRO do campo de "${course}"
+      - Evite repetir trilhas similares às que o estudante já possui
+      
+      Para cada uma das 2-3 trilhas, forneça uma estrutura completa:
+      - Título, descrição, categoria (deve ser "${course}") e dificuldade ('Iniciante', 'Intermediário', 'Avançado').
+      - Uma lista de 5 a 7 etapas principais.
+      - Para cada etapa: título, descrição, a rationale (por que é importante), e 4-6 sub-etapas detalhadas.
+      - Para cada sub-etapa, forneça o **tópico** e um **link (URL)** para um recurso externo 
+        de alta qualidade sobre o assunto.
+
+      A resposta DEVE ser um objeto JSON com uma chave "paths", contendo um array de 2-3 objetos de trilha, 
+      seguindo estritamente o schema fornecido.
+    `;
+
+    // Chama a API do Gemini
+    const response = await getAI().models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: fullPrompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: recommendedPathsSchema,
+        temperature: 0.9,  // Mais criativo para gerar trilhas diferentes
+      },
+    });
+
+    // Parseia a resposta JSON
+    const jsonText = response.text.trim();
+    const result = JSON.parse(jsonText) as { 
+      paths: (Omit<LearningPath, 'id' | 'progress' | 'steps'> & { 
+        steps: (Omit<Step, 'completed' | 'subSteps'> & { subSteps: SubStep[] })[] 
+      })[] 
+    };
+
+    // Valida se a resposta contém as trilhas esperadas
+    if (!result.paths || !Array.isArray(result.paths)) {
+        throw new Error("A resposta da IA não continha um array de trilhas válido.");
+    }
+    
+    // Adiciona 'completed: false' para todas as etapas de todas as trilhas
+    const pathsWithCompletion = result.paths.map(path => ({
+        ...path,
+        steps: path.steps.map(step => ({ ...step, completed: false })),
+    }));
+
+    return pathsWithCompletion;
+  } catch (error) {
+    console.error("Error generating performance-based recommendations:", error);
+    throw new Error("Não foi possível gerar recomendações baseadas no desempenho. Tente novamente mais tarde.");
+  }
+};
+
 export const generateRecommendedPaths = async (
   course: string,
   experienceLevel: User['experienceLevel']

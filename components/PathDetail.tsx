@@ -25,7 +25,11 @@ const DifficultyBadge: React.FC<{ difficulty: string }> = ({ difficulty }) => {
 };
 
 const PathDetail: React.FC<PathDetailProps> = ({ path, onToggleStep, onBack, onDelete }) => {
-    
+  console.log("PathDetail renderizado com:", path);
+  
+  // Garante que path.steps existe e é um array
+  const steps = path.steps || [];
+  
   const handleDelete = () => {
     if (window.confirm(`Tem certeza que deseja excluir a trilha "${path.title}"?`)) {
       onDelete(path.id);
@@ -73,17 +77,23 @@ const PathDetail: React.FC<PathDetailProps> = ({ path, onToggleStep, onBack, onD
 
         <div>
           <h2 className="text-xl font-semibold text-slate-900 mb-4">Etapas da Trilha</h2>
-          <div className="space-y-4">
-            {path.steps.map((step, index) => (
-              <StepItem
-                key={index}
-                step={step}
-                index={index}
-                isCompleted={step.completed}
-                onToggle={() => onToggleStep(path.id, index)}
-              />
-            ))}
-          </div>
+          {steps.length > 0 ? (
+            <div className="space-y-4">
+              {steps.map((step, index) => (
+                <StepItem
+                  key={index}
+                  step={step}
+                  index={index}
+                  isCompleted={step.completed || false}
+                  onToggle={() => onToggleStep(path.id, index)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-slate-500">
+              <p>Esta trilha ainda não possui etapas definidas.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

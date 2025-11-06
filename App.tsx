@@ -192,21 +192,63 @@ const App: React.FC = () => {
    * 
    * @param path - Trilha selecionada pelo usuário
    */
-  const handleSelectPath = (path: LearningPath) => {
+  const handleSelectPath = async (path: LearningPath | Omit<LearningPath, 'progress'>) => {
+    console.log("handleSelectPath chamado com:", path.id, path.title);
+    
     // Verifica se a trilha já está na lista do usuário
     const existingPath = userPaths.find(p => p.id === path.id);
     
     if (existingPath) {
-      // Se já existe, usa a versão da lista (com progresso atualizado)
+      // Se já existe, usa a versão da lista (com progresso atualizado e steps completos)
+      console.log("Usando trilha existente da lista:", existingPath.id);
       setSelectedPath(existingPath);
+      setCurrentView('path-detail');
+      setSidebarOpen(false);
     } else {
-      // Se não existe (trilha recomendada), usa a versão recebida
-      setSelectedPath(path);
+      // Se não existe na lista, busca do banco de dados para garantir dados completos
+      console.log("Buscando trilha do banco:", path.id);
+      try {
+        const { learningPathsAPI } = await import('./services/api');
+        const fullPathData = await learningPathsAPI.getById(path.id);
+        
+        console.log("Trilha carregada do banco:", fullPathData);
+        
+        // Converte para o formato do frontend
+        const fullPath: LearningPath = {
+          id: String(fullPathData.id),
+          title: fullPathData.title,
+          description: fullPathData.description,
+          category: fullPathData.category,
+          difficulty: fullPathData.difficulty,
+          progress: fullPathData.progress || 0,
+          is_recommended: (fullPathData as any).is_recommended || false,
+          steps: fullPathData.steps.map((step: any) => ({
+            title: step.title,
+            description: step.description,
+            rationale: step.rationale,
+            completed: step.completed || false,
+            subSteps: step.subSteps || [],
+          })),
+        };
+        
+        console.log("Trilha formatada:", fullPath);
+        setSelectedPath(fullPath);
+        setCurrentView('path-detail');
+        setSidebarOpen(false);
+      } catch (error) {
+        console.error("Failed to load path details", error);
+        // Em caso de erro, tenta usar os dados que temos
+        const fallbackPath: LearningPath = {
+          ...path,
+          progress: (path as LearningPath).progress ?? 0,
+          steps: (path as any).steps || [],
+        };
+        console.log("Usando trilha fallback:", fallbackPath);
+        setSelectedPath(fallbackPath);
+        setCurrentView('path-detail');
+        setSidebarOpen(false);
+      }
     }
-    
-    // Muda para a view de detalhes e fecha o sidebar (mobile)
-    setCurrentView('path-detail');
-    setSidebarOpen(false);
   };
   
   /**
@@ -326,24 +368,33 @@ const App: React.FC = () => {
    * @param pathId - ID da trilha a ser deletada
    */
   const handleDeletePath = async (pathId: string) => {
+    console.log("handleDeletePath chamado para ID:", pathId);
+    
     try {
       // Importa o serviço de API
       const { learningPathsAPI } = await import('./services/api');
       
       // Deleta a trilha no banco de dados
+      console.log("Deletando trilha no banco de dados...");
       await learningPathsAPI.delete(pathId);
+      console.log("Trilha deletada com sucesso no banco");
       
       // Remove da lista local
       const updatedPaths = userPaths.filter(p => p.id !== pathId);
+      console.log(`Removendo trilha da lista. Antes: ${userPaths.length}, Depois: ${updatedPaths.length}`);
       setUserPaths(updatedPaths);
       
       // Se a trilha deletada estava sendo visualizada, volta para dashboard
       if (selectedPath?.id === pathId) {
+        console.log("Trilha deletada estava selecionada, voltando para dashboard");
         setSelectedPath(null);
         setCurrentView('dashboard');
       }
-    } catch (error) {
-      console.error("Failed to delete path", error);
+      
+      console.log("Exclusão concluída com sucesso");
+    } catch (error: any) {
+      console.error("Erro ao deletar trilha:", error);
+      alert(`Erro ao excluir trilha: ${error.message || 'Erro desconhecido'}`);
     }
   }
 
@@ -430,14 +481,20 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'path-detail':
         // View de detalhes da trilha
-        return selectedPath ? (
+        if (!selectedPath) {
+          console.warn("selectedPath é null, voltando para dashboard");
+          setCurrentView('dashboard');
+          return null;
+        }
+        console.log("Renderizando PathDetail com:", selectedPath);
+        return (
           <PathDetail
             path={selectedPath}
             onToggleStep={handleToggleStep}
             onBack={() => setCurrentView('dashboard')}
             onDelete={handleDeletePath}
           />
-        ) : null;
+        );
         
       case 'create-path':
         // View de criação de trilha com IA

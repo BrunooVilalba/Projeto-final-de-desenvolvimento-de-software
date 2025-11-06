@@ -47,7 +47,7 @@ async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<
   }
   
   // Faz a requisição inicial
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  let response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
   });
@@ -58,18 +58,16 @@ async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<
     if (refreshed) {
       // Tenta a requisição novamente com o novo token
       headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
-      const retryResponse = await fetch(`${API_BASE_URL}${endpoint}`, {
+      response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
       });
-      
-      if (!retryResponse.ok) {
-        const error = await retryResponse.json().catch(() => ({ detail: 'Erro na requisição' }));
-        throw new Error(error.detail || error.message || 'Erro na requisição');
-      }
-      
-      return retryResponse.json();
     }
+  }
+  
+  // DELETE pode retornar 204 (No Content) sem corpo - sucesso
+  if (response.status === 204) {
+    return null;
   }
   
   // Se a resposta não for bem-sucedida, lança erro
@@ -78,8 +76,17 @@ async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<
     throw new Error(error.detail || error.message || 'Erro na requisição');
   }
   
-  // Retorna os dados JSON da resposta
-  return response.json();
+  // Tenta retornar os dados JSON da resposta
+  // Se não houver conteúdo (status 204 já tratado acima), retorna null
+  try {
+    const text = await response.text();
+    if (!text) {
+      return null;
+    }
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -359,6 +366,7 @@ export const learningPathsAPI = {
    * console.log('Trilha deletada');
    */
   async delete(id: string) {
+    // Usa apiRequest que já trata status 204 corretamente
     return apiRequest(`/learning-paths/${id}/`, {
       method: 'DELETE',
     });
