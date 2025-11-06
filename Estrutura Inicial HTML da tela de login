@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login de Usuário</title>
+<style>
+/* CSS – Estilo visual */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f3f7ff, #eef6f1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    width: 350px;
+    text-align: center;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3366ff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#message {
+    margin-top: 12px;
+    font-size: 14px;
+}
+#message.error { color: #b91c1c; }
+#message.success { color: #065f46; }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Usuário:</label>
+        <input type="text" id="username" placeholder="Digite seu usuário" required>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" placeholder="Digite sua senha" required>
+
+        <button type="submit" id="btnLogin">Entrar</button>
+
+        <div id="message"></div>
+    </form>
+</div>
+
+<script>
+// JavaScript – Comportamento do formulário
+const form = document.getElementById('loginForm');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const message = document.getElementById('message');
+const btn = document.getElementById('btnLogin');
+
+function showMessage(text, type='error') {
+    message.textContent = text;
+    message.className = type;
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault(); // Evita recarregar a página
+
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    const userVal = username.value.trim();
+    const passVal = password.value;
+
+    // Simulação de login
+    setTimeout(() => {
+        if(userVal === 'admin' && passVal === '1234') {
+            showMessage('Login bem-sucedido!', 'success');
+        } else {
+            showMessage('Usuário ou senha incorretos.', 'error');
+        }
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+    }, 500);
+});
+</script>
+
+</body>
+</html>
