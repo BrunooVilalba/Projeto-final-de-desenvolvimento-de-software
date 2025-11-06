@@ -15,7 +15,7 @@ const Register: React.FC<RegisterProps> = ({ onSuccessfulRegistration, onNavigat
   const [experienceLevel, setExperienceLevel] = useState<'Iniciante' | 'Intermediário' | 'Avançado'>('Iniciante');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -30,23 +30,18 @@ const Register: React.FC<RegisterProps> = ({ onSuccessfulRegistration, onNavigat
     }
 
     try {
-        const storedUsers = localStorage.getItem('users');
-        const users: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-        
-        const existingUser = users.find(user => user.email === email);
-        if (existingUser) {
-            setError('Este e-mail já está cadastrado.');
-            return;
-        }
-
-        const newUser: User = { name, email, password, course, experienceLevel };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        
+        const { authAPI } = await import('../services/api');
+        await authAPI.register({
+          username: email.split('@')[0],
+          email,
+          password,
+          first_name: name,
+          course,
+          experience_level: experienceLevel,
+        });
         onSuccessfulRegistration();
-
-    } catch (err) {
-        setError('Ocorreu um erro ao tentar se cadastrar.');
+    } catch (err: any) {
+        setError(err.message || 'Ocorreu um erro ao tentar se cadastrar.');
     }
   };
 

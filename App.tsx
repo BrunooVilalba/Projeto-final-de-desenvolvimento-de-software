@@ -22,57 +22,76 @@ const App: React.FC = () => {
   const [authModal, setAuthModal] = useState<'hidden' | 'login' | 'register'>('hidden');
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('currentUser');
-      if (savedUser) {
-        const user = JSON.parse(savedUser);
-        setCurrentUser(user);
-        setIsAuthenticated(true);
+    const checkAuth = async () => {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        try {
+          const { authAPI } = await import('./services/api');
+          const userData = await authAPI.getProfile();
+          const user: User = {
+            name: userData.first_name || userData.username,
+            email: userData.email,
+            course: userData.course,
+            experienceLevel: userData.experience_level,
+          };
+          setCurrentUser(user);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error("Failed to load user from API", error);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+        }
       }
-    } catch (error) {
-      console.error("Failed to load user from localStorage", error);
-    }
+    };
+    checkAuth();
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      try {
-        const savedPaths = localStorage.getItem(`userLearningPaths_${currentUser.email}`);
-        if (savedPaths) {
-          setUserPaths(JSON.parse(savedPaths));
-        } else {
+    const loadPaths = async () => {
+      if (currentUser && localStorage.getItem('accessToken')) {
+        try {
+          const { learningPathsAPI } = await import('./services/api');
+          const paths = await learningPathsAPI.getAll();
+          // Converter formato da API para formato do frontend
+          const formattedPaths: LearningPath[] = paths.map((path: any) => ({
+            id: String(path.id),
+            title: path.title,
+            description: path.description,
+            category: path.category,
+            difficulty: path.difficulty,
+            progress: path.progress,
+            steps: path.steps.map((step: any) => ({
+              title: step.title,
+              description: step.description,
+              rationale: step.rationale,
+              completed: step.completed,
+              subSteps: step.subSteps || [],
+            })),
+          }));
+          setUserPaths(formattedPaths);
+        } catch (error) {
+          console.error("Failed to load paths from API", error);
           setUserPaths([]);
         }
-      } catch (error) {
-        console.error("Failed to load paths from localStorage", error);
       }
-    }
-  }, [currentUser]);
-
-  const savePaths = useCallback((paths: LearningPath[]) => {
-    if (currentUser) {
-      try {
-        localStorage.setItem(`userLearningPaths_${currentUser.email}`, JSON.stringify(paths));
-      } catch (error) {
-        console.error("Failed to save paths to localStorage", error);
-      }
-    }
+    };
+    loadPaths();
   }, [currentUser]);
   
   const handleLoginSuccess = (user: User) => {
     setCurrentUser(user);
     setIsAuthenticated(true);
-    localStorage.setItem('currentUser', JSON.stringify(user));
     setAuthModal('hidden');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const { authAPI } = await import('./services/api');
+    authAPI.logout();
     setIsAuthenticated(false);
     setCurrentUser(null);
     setUserPaths([]);
     setSelectedPath(null);
     setCurrentView('dashboard');
-    localStorage.removeItem('currentUser');
   };
 
   const handleSelectPath = (path: LearningPath) => {
@@ -80,56 +99,96 @@ const App: React.FC = () => {
     if(existingPath) {
         setSelectedPath(existingPath);
     } else {
-        const newPathWithId = { ...path, id: path.id || `user-${Date.now()}`, progress: 0 };
-        const updatedPaths = [...userPaths, newPathWithId];
-        setUserPaths(updatedPaths);
-        savePaths(updatedPaths);
-        setSelectedPath(newPathWithId);
+        setSelectedPath(path);
     }
     setCurrentView('path-detail');
     setSidebarOpen(false);
   };
   
-  const handleAddGeneratedPath = (path: Omit<LearningPath, 'id' | 'progress'>) => {
-    const newPath: LearningPath = {
-      ...path,
-      id: `ai-${Date.now()}`,
-      progress: 0,
-      steps: path.steps.map(step => ({ ...step, completed: false }))
-    };
-    const updatedPaths = [...userPaths, newPath];
-    setUserPaths(updatedPaths);
-    savePaths(updatedPaths);
-    setSelectedPath(newPath);
-    setCurrentView('path-detail');
-  };
-
-  const handleToggleStep = (pathId: string, stepIndex: number) => {
-    const updatedPaths = userPaths.map(path => {
-      if (path.id === pathId) {
-        const newSteps = [...path.steps];
-        newSteps[stepIndex].completed = !newSteps[stepIndex].completed;
-        const completedCount = newSteps.filter(s => s.completed).length;
-        const progress = Math.round((completedCount / newSteps.length) * 100);
-        return { ...path, steps: newSteps, progress };
-      }
-      return path;
-    });
-    setUserPaths(updatedPaths);
-    savePaths(updatedPaths);
-    if(selectedPath && selectedPath.id === pathId) {
-        const updatedSelectedPath = updatedPaths.find(p => p.id === pathId);
-        if(updatedSelectedPath) setSelectedPath(updatedSelectedPath);
+  const handleAddGeneratedPath = async (path: Omit<LearningPath, 'id' | 'progress'>) => {
+    try {
+      const { learningPathsAPI } = await import('./services/api');
+      const createdPath = await learningPathsAPI.create({
+        title: path.title,
+        description: path.description,
+        category: path.category,
+        difficulty: path.difficulty,
+        steps_data: path.steps.map(step => ({
+          title: step.title,
+          description: step.description,
+          rationale: step.rationale,
+          subSteps: step.subSteps || [],
+        })),
+      });
+      
+      const newPath: LearningPath = {
+        id: String(createdPath.id),
+        title: createdPath.title,
+        description: createdPath.description,
+        category: createdPath.category,
+        difficulty: createdPath.difficulty,
+        progress: createdPath.progress,
+        steps: createdPath.steps.map((step: any) => ({
+          title: step.title,
+          description: step.description,
+          rationale: step.rationale,
+          completed: step.completed,
+          subSteps: step.subSteps || [],
+        })),
+      };
+      
+      setUserPaths([...userPaths, newPath]);
+      setSelectedPath(newPath);
+      setCurrentView('path-detail');
+    } catch (error) {
+      console.error("Failed to create path", error);
     }
   };
 
-  const handleDeletePath = (pathId: string) => {
-    const updatedPaths = userPaths.filter(p => p.id !== pathId);
-    setUserPaths(updatedPaths);
-    savePaths(updatedPaths);
-    if (selectedPath?.id === pathId) {
+  const handleToggleStep = async (pathId: string, stepIndex: number) => {
+    try {
+      const { learningPathsAPI } = await import('./services/api');
+      const updatedPath = await learningPathsAPI.toggleStep(pathId, stepIndex);
+      
+      const formattedPath: LearningPath = {
+        id: String(updatedPath.id),
+        title: updatedPath.title,
+        description: updatedPath.description,
+        category: updatedPath.category,
+        difficulty: updatedPath.difficulty,
+        progress: updatedPath.progress,
+        steps: updatedPath.steps.map((step: any) => ({
+          title: step.title,
+          description: step.description,
+          rationale: step.rationale,
+          completed: step.completed,
+          subSteps: step.subSteps || [],
+        })),
+      };
+      
+      const updatedPaths = userPaths.map(p => p.id === pathId ? formattedPath : p);
+      setUserPaths(updatedPaths);
+      
+      if(selectedPath && selectedPath.id === pathId) {
+        setSelectedPath(formattedPath);
+      }
+    } catch (error) {
+      console.error("Failed to toggle step", error);
+    }
+  };
+
+  const handleDeletePath = async (pathId: string) => {
+    try {
+      const { learningPathsAPI } = await import('./services/api');
+      await learningPathsAPI.delete(pathId);
+      const updatedPaths = userPaths.filter(p => p.id !== pathId);
+      setUserPaths(updatedPaths);
+      if (selectedPath?.id === pathId) {
         setSelectedPath(null);
         setCurrentView('dashboard');
+      }
+    } catch (error) {
+      console.error("Failed to delete path", error);
     }
   }
   

@@ -1,141 +1,379 @@
-# Projeto-final-de-desenvolvimento-de-software
+# 🎓 EstudaAI - Personalized Learning Paths
 
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+
+![EstudaAI Logo](https://img.shields.io/badge/EstudaAI-Learning%20Paths-red?style=for-the-badge)
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=for-the-badge&logo=react)
+![Django](https://img.shields.io/badge/Django-5.2.8-092E20?style=for-the-badge&logo=django)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-3178C6?style=for-the-badge&logo=typescript)
+
+**Plataforma inteligente de trilhas de aprendizagem personalizadas com IA**
+
+[Características](#-características) • [Tecnologias](#-tecnologias) • [Instalação](#-instalação) • [Uso](#-uso) • [API](#-api)
+
 </div>
 
-## EstudaAI - Sistema de Trilhas de Aprendizagem Personalizadas
+---
 
-Sistema web para criação e gerenciamento de trilhas de aprendizagem personalizadas usando React, TypeScript, Vite e Gemini AI.
+## 📋 Sobre o Projeto
 
-### [Modelagem] Caso de Uso - Visualizar trilha e progresso
-https://miro.com/app/board/uXjVJC1hrHg=/
+O **EstudaAI** é uma plataforma completa de aprendizado personalizado que utiliza inteligência artificial (Google Gemini) para criar trilhas de aprendizagem customizadas baseadas nos objetivos e perfil do estudante. O sistema permite criar, gerenciar e acompanhar o progresso em trilhas de conhecimento estruturadas.
 
-### [Modelagem] Caso de Uso - Solicitar trilha personalizada via LLM
-Link LLM Gemini: https://g.co/gemini/share/7cfa8456d500
+### 🎯 Principais Funcionalidades
 
-Link Diagrama Miro: https://miro.com/app/board/uXjVJC2ENuY=/?share_link_id=829155832950
+- ✅ **Autenticação Completa**: Sistema de registro e login com JWT
+- ✅ **Trilhas Personalizadas**: Criação de trilhas via IA baseadas em prompts
+- ✅ **Recomendações Inteligentes**: Sugestões de trilhas baseadas no perfil do usuário
+- ✅ **Acompanhamento de Progresso**: Marcação de etapas concluídas e cálculo automático de progresso
+- ✅ **Persistência de Dados**: Todas as informações são salvas no banco de dados
+- ✅ **Interface Moderna**: Design responsivo e intuitivo com Tailwind CSS
 
-### [Modelagem] Caso de Uso - Escolher trilha pré-definida.
-https://miro.com/app/board/uXjVJChIDBE=/?share_link_id=786603644238
+---
 
-### [Modelagem] Criar o modelo de domínio conceitual do sistema
-https://miro.com/app/board/uXjVJ8uKHH0=/
+## 🛠️ Tecnologias
 
-### [Modelagem] Criar o diagrama de conceitual (UML)
-https://miro.com/welcomeonboard/ZmdkVkE5a1FsRzREa1krbGxweE1EUkZvMndwRkFmSStVNEVNVHFJdTZ3bUVaemEwR3kweVJmZXIwWElQTGZETWFjaEFFMVhPb0cwOHB3Z1QvOXRwSG5wdWFkdEI4ejVvN3p4di9SVFF4eWY1UDVFWTlpMGROeGNEbG1mUTk4WDdBS2NFMDFkcUNFSnM0d3FEN050ekl3PT0hdjE=?share_link_id=60071469457
+### Frontend
+- **React 19.2.0** - Biblioteca JavaScript para construção de interfaces
+- **TypeScript 5.8.2** - Superset do JavaScript com tipagem estática
+- **Vite 6.2.0** - Build tool e dev server ultra-rápido
+- **Tailwind CSS** - Framework CSS utility-first
+- **React DOM 19.2.0** - Renderização React para navegadores
 
-## Frontend - EstudaAI (React + Vite + TypeScript)
+### Backend
+- **Django 5.2.8** - Framework web Python de alto nível
+- **Django REST Framework 3.16.1** - Toolkit para construção de APIs REST
+- **Django REST Framework SimpleJWT 5.5.1** - Autenticação JWT
+- **Django CORS Headers 4.9.0** - Headers CORS para Django
+- **SQLite** - Banco de dados relacional (pode ser migrado para PostgreSQL/MySQL)
+
+### IA e Serviços
+- **Google Gemini AI** - Geração de conteúdo e trilhas personalizadas
+- **@google/genai 1.28.0** - SDK oficial do Google Generative AI
+
+---
+
+## 🚀 Instalação
 
 ### Pré-requisitos
-- Node.js (versão 18 ou superior)
-- npm ou yarn
 
-### Como rodar o frontend
+- **Python 3.8+**
+- **Node.js 16+**
+- **npm** ou **yarn**
+- **Conta Google** com API Key do Gemini (opcional para desenvolvimento)
 
-1. Instalar dependências:
+### 1. Clone o Repositório
+
 ```bash
+git clone <repository-url>
+cd estudaai---personalized-learning-paths-2
+```
+
+### 2. Configuração do Backend (Django)
+
+```bash
+# Instalar dependências Python
+pip install -r requirements.txt
+
+# Executar migrações do banco de dados
+python manage.py makemigrations
+python manage.py migrate
+
+# Criar superusuário (opcional, para acessar admin)
+python manage.py createsuperuser
+```
+
+### 3. Configuração do Frontend (React)
+
+```bash
+# Instalar dependências Node.js
 npm install
 ```
 
-2. Configurar chave da API Gemini:
-   - Copie o arquivo `.env.example` para `.env.local` (se existir)
-   - Ou configure a variável `GEMINI_API_KEY` no arquivo `services/geminiService.ts`
-   - **Nota:** Por segurança, mova a API key para variáveis de ambiente em produção
+### 4. Configuração da API Gemini (Opcional)
 
-3. Rodar o servidor de desenvolvimento:
-```bash
-npm run dev
-```
+A API key do Gemini está configurada no arquivo `services/geminiService.ts`. Para produção, configure via variável de ambiente.
 
-4. Acessar no navegador:
-   - Local: http://localhost:3000
-   - O servidor Vite pode usar outra porta se a 3000 estiver em uso
+---
 
-### Funcionalidades
+## 📖 Uso
 
-- ✅ Landing Page com apresentação do sistema
-- ✅ Autenticação de usuários (Login/Registro)
-- ✅ Dashboard com trilhas de aprendizagem
-- ✅ Criação de trilhas personalizadas com IA (Gemini)
-- ✅ Recomendações de trilhas baseadas no perfil do usuário
-- ✅ Acompanhamento de progresso
-- ✅ Interface responsiva com Tailwind CSS
+### Iniciar o Servidor Backend
 
-## Backend - Django (Opcional)
-
-### Como configurar o ambiente e rodar o projeto Django
-
-### 1. Criar o ambiente virtual
-
-No terminal, dentro da pasta raiz do projeto, rode:
-```bash
-python -m venv venv
-```
-
-### 2. Ativar o ambiente virtual
-No Windows:
-```bash
-.\venv\Scripts\activate
-```
-
-No Linux/macOS:
-```bash
-source venv/bin/activate
-```
-
-### 3. Instalar as dependências
-
-Instale as dependências listadas no arquivo requirements.txt:
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Rodar o servidor de desenvolvimento
-
-Inicie o servidor Django:
 ```bash
 python manage.py runserver
 ```
 
-### 5. Depois abra seu navegador e acesse:
-http://127.0.0.1:8000/
+O backend estará disponível em: `http://localhost:8000`
 
-## Tecnologias Utilizadas
+### Iniciar o Servidor Frontend
 
-### Frontend
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- Google Gemini AI
+```bash
+npm run dev
+```
+
+O frontend estará disponível em: `http://localhost:3000` ou `http://localhost:3001`
+
+### Acessar o Sistema
+
+1. Abra o navegador em `http://localhost:3001`
+2. Clique em **"Cadastre-se"** para criar uma conta
+3. Preencha os dados (nome, email, senha, curso, nível de experiência)
+4. Faça login com suas credenciais
+5. Crie trilhas personalizadas ou explore recomendações
+
+---
+
+## 🔐 Autenticação
+
+### Registro de Usuário
+
+- **Email único**: O sistema valida que cada email só pode ser cadastrado uma vez
+- **Senha mínima**: 6 caracteres
+- **Campos obrigatórios**: Email, senha, nome
+- **Campos opcionais**: Curso, nível de experiência
+
+### Login
+
+- Login pode ser feito com **email** ou **username**
+- Tokens JWT são armazenados no localStorage
+- Refresh token automático quando o access token expira
+- Sessão persiste mesmo após fechar o navegador
+
+### Persistência de Dados
+
+- ✅ Todas as trilhas são salvas no banco de dados Django
+- ✅ Progresso é mantido entre sessões
+- ✅ Ao fazer logout e login novamente, todas as trilhas são recuperadas
+- ✅ Dados persistem mesmo após reiniciar os servidores
+
+---
+
+## 📡 API Endpoints
+
+### Autenticação
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/api/auth/register/` | Registrar novo usuário | Não |
+| POST | `/api/auth/login/` | Login (obter tokens JWT) | Não |
+| POST | `/api/auth/refresh/` | Renovar access token | Não |
+| GET | `/api/auth/profile/` | Obter perfil do usuário | Sim |
+
+### Trilhas de Aprendizagem
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| GET | `/api/learning-paths/` | Listar trilhas do usuário | Sim |
+| POST | `/api/learning-paths/` | Criar nova trilha | Sim |
+| GET | `/api/learning-paths/{id}/` | Obter detalhes de uma trilha | Sim |
+| PUT | `/api/learning-paths/{id}/` | Atualizar trilha | Sim |
+| DELETE | `/api/learning-paths/{id}/` | Deletar trilha | Sim |
+| POST | `/api/learning-paths/{id}/toggle_step/` | Alternar conclusão de etapa | Sim |
+
+### Exemplo de Requisição
+
+```bash
+# Login
+curl -X POST http://localhost:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "usuario@email.com", "password": "senha123"}'
+
+# Listar trilhas (requer token)
+curl -X GET http://localhost:8000/api/learning-paths/ \
+  -H "Authorization: Bearer <access_token>"
+```
+
+---
+
+## 🗂️ Estrutura do Projeto
+
+```
+estudaai---personalized-learning-paths-2/
+├── api/                          # App Django (Backend)
+│   ├── models.py                # Models do banco de dados
+│   ├── views.py                 # Views da API REST
+│   ├── serializers.py           # Serializers DRF
+│   ├── urls.py                  # URLs da API
+│   ├── admin.py                 # Configuração do Django Admin
+│   └── migrations/              # Migrações do banco de dados
+│
+├── mysite/                       # Configurações Django
+│   ├── settings.py              # Configurações do projeto
+│   ├── urls.py                  # URLs principais
+│   └── wsgi.py                  # WSGI config
+│
+├── components/                   # Componentes React
+│   ├── AuthModal.tsx            # Modal de autenticação
+│   ├── Dashboard.tsx            # Dashboard principal
+│   ├── CreatePath.tsx           # Criação de trilhas
+│   ├── PathDetail.tsx           # Detalhes da trilha
+│   ├── LandingPage.tsx          # Página inicial
+│   └── ...
+│
+├── services/                     # Serviços
+│   ├── api.ts                   # Cliente da API Django
+│   └── geminiService.ts         # Serviço de IA Gemini
+│
+├── App.tsx                       # Componente principal React
+├── index.tsx                     # Entry point React
+├── index.html                    # HTML base
+├── types.ts                      # Tipos TypeScript
+├── package.json                  # Dependências Node.js
+├── requirements.txt              # Dependências Python
+└── manage.py                     # Script Django
+```
+
+---
+
+## 🎨 Funcionalidades Detalhadas
+
+### 1. Criação de Trilhas com IA
+
+- Descreva o que deseja aprender em um prompt
+- A IA gera uma trilha completa com:
+  - 8-10 etapas estruturadas
+  - Descrição detalhada de cada etapa
+  - Justificativa (rationale) de cada etapa
+  - 4-6 subtópicos por etapa
+  - Links de recursos externos para cada subtópico
+
+### 2. Recomendações Personalizadas
+
+- O sistema gera 3 trilhas recomendadas baseadas em:
+  - Curso/área de formação do usuário
+  - Nível de experiência (Iniciante, Intermediário, Avançado)
+- Recomendações são cacheadas no localStorage
+
+### 3. Acompanhamento de Progresso
+
+- Marque etapas como concluídas
+- Progresso calculado automaticamente (%)
+- Visualização clara do progresso geral
+- Histórico de todas as trilhas
+
+### 4. Gerenciamento de Trilhas
+
+- Visualizar todas as trilhas criadas
+- Ver detalhes completos de cada trilha
+- Deletar trilhas não desejadas
+- Explorar trilhas recomendadas
+
+---
+
+## 🔒 Segurança
+
+- ✅ Autenticação JWT com tokens de acesso e refresh
+- ✅ Validação de email único no banco de dados
+- ✅ Senhas com hash seguro (Django)
+- ✅ CORS configurado para desenvolvimento
+- ✅ Validação de dados no backend e frontend
+- ⚠️ **Nota**: Para produção, configure:
+  - HTTPS
+  - SECRET_KEY seguro
+  - DEBUG = False
+  - Configurações de segurança Django
+
+---
+
+## 🧪 Testes
+
+### Verificar se o Backend está funcionando
+
+```bash
+python manage.py check
+python manage.py runserver
+```
+
+### Verificar se o Frontend está funcionando
+
+```bash
+npm run dev
+```
+
+### Testar API diretamente
+
+```bash
+# Verificar endpoints
+curl http://localhost:8000/api/learning-paths/
+```
+
+---
+
+## 📝 Scripts Disponíveis
 
 ### Backend (Django)
-- Python
-- Django
-- SQLite
 
-## Estrutura do Projeto
-
-```
-├── components/          # Componentes React
-│   ├── AuthModal.tsx
-│   ├── Dashboard.tsx
-│   ├── LandingPage.tsx
-│   └── ...
-├── services/            # Serviços (API Gemini)
-│   └── geminiService.ts
-├── types.ts             # Tipos TypeScript
-├── App.tsx              # Componente principal
-├── index.tsx            # Ponto de entrada
-└── vite.config.ts       # Configuração do Vite
+```bash
+python manage.py runserver          # Iniciar servidor
+python manage.py makemigrations     # Criar migrações
+python manage.py migrate            # Aplicar migrações
+python manage.py createsuperuser    # Criar admin
+python manage.py shell              # Django shell
 ```
 
-## Contribuidores
+### Frontend (React)
 
-- @Gabriel-Apolinario01
-- @BRUNEBAS001
-- @Aruak-Malta
-- @Felipenar-x
-- @Nicleo1112
-- @escobarfelipe21
+```bash
+npm run dev      # Desenvolvimento
+npm run build    # Build para produção
+npm run preview  # Preview do build
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Problema: Email já cadastrado
+
+**Solução**: O sistema valida emails únicos. Se você tentar cadastrar um email existente, receberá uma mensagem de erro.
+
+### Problema: Token expirado
+
+**Solução**: O sistema renova tokens automaticamente. Se persistir, faça logout e login novamente.
+
+### Problema: Trilhas não aparecem
+
+**Solução**: Verifique se está autenticado e se o backend está rodando na porta 8000.
+
+### Problema: CORS Error
+
+**Solução**: Verifique se `CORS_ALLOWED_ORIGINS` no `settings.py` inclui a URL do frontend.
+
+---
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido com ❤️ para facilitar o aprendizado personalizado.
+
+---
+
+## 🔗 Links Úteis
+
+- [Documentação Django](https://docs.djangoproject.com/)
+- [Documentação React](https://react.dev/)
+- [Documentação Django REST Framework](https://www.django-rest-framework.org/)
+- [Documentação Google Gemini](https://ai.google.dev/docs)
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto foi útil, considere dar uma estrela! ⭐**
+
+</div>

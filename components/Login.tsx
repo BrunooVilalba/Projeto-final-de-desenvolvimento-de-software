@@ -13,7 +13,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onNavigateToRegister, reg
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -23,18 +23,18 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onNavigateToRegister, reg
     }
     
     try {
-        const storedUsers = localStorage.getItem('users');
-        const users: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-        const foundUser = users.find(user => user.email === email && user.password === password);
-
-        if (foundUser) {
-            onLoginSuccess(foundUser);
-        } else {
-            setError('E-mail ou senha inválidos.');
-        }
-
-    } catch (err) {
-        setError('Ocorreu um erro ao tentar fazer login.');
+        const { authAPI } = await import('../services/api');
+        const user = await authAPI.login(email, password);
+        // Converter formato da API para formato esperado pelo frontend
+        const frontendUser: User = {
+          name: user.first_name || user.username,
+          email: user.email,
+          course: user.course,
+          experienceLevel: user.experience_level,
+        };
+        onLoginSuccess(frontendUser);
+    } catch (err: any) {
+        setError(err.message || 'Ocorreu um erro ao tentar fazer login.');
     }
   };
 
