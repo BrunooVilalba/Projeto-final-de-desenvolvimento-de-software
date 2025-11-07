@@ -269,7 +269,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           // IMPORTANTE: Isso ADICIONA às trilhas existentes, não substitui
           await onSaveRecommendedPaths(pathsWithFlag);
 
-          console.log(`✅ ${pathsWithFlag.length} novas trilhas recomendadas geradas baseadas no desempenho!`);
+          console.log(`${pathsWithFlag.length} novas trilhas recomendadas geradas baseadas no desempenho!`);
         } catch (err: any) {
           // Em caso de erro, apenas loga (não mostra erro ao usuário para não ser intrusivo)
           console.error("Erro ao gerar recomendações baseadas em desempenho:", err);

@@ -1,12 +1,12 @@
-# 📝 Documentação de Comentários do Código
+# Documentação de Comentários do Código
 
 Este documento descreve a estrutura de comentários profissional implementada em todo o projeto EstudaAI.
 
-## ✅ Arquivos Comentados
+## Arquivos Comentados
 
 ### Backend (Django)
 
-#### ✅ Completamente Comentados:
+#### Completamente Comentados:
 
 1. **`api/models.py`**
    - Docstrings detalhadas em todas as classes
@@ -38,7 +38,7 @@ Este documento descreve a estrutura de comentários profissional implementada em
 
 ### Frontend (React/TypeScript)
 
-#### ✅ Comentados com JSDoc:
+#### Comentados com JSDoc:
 
 1. **`App.tsx`**
    - Cabeçalho completo com descrição do componente
@@ -79,7 +79,7 @@ Este documento descreve a estrutura de comentários profissional implementada em
    - Explicação de cache de trilhas
    - Documentação de estados de loading
 
-## 📚 Estilo de Comentários
+## Estilo de Comentários
 
 ### Python (Django)
 
@@ -119,7 +119,7 @@ Example:
  */
 ```
 
-## 🎯 Padrões Seguidos
+## Padrões Seguidos
 
 1. **Autor**: Todos os arquivos principais incluem `@author` ou nota de autentoria
 2. **Descrição**: Cada arquivo/módulo tem descrição do propósito
@@ -129,7 +129,7 @@ Example:
 6. **Erros**: Tratamento de erros é explicado
 7. **Complexidade**: Lógica complexa é detalhadamente explicada
 
-## 📖 Arquivos com Documentação
+## Arquivos com Documentação
 
 ### Testes
 
@@ -143,18 +143,18 @@ Example:
 - `vitest.config.ts` - Configuração de testes (comentado)
 - `test/setup.ts` - Setup de testes (comentado)
 
-## 🔍 Como Usar os Comentários
+## Como Usar os Comentários
 
 1. **IDEs**: A maioria das IDEs modernas exibe os comentários quando você passa o mouse sobre funções/classes
 2. **Documentação**: Use ferramentas como `typedoc` (TypeScript) ou `sphinx` (Python) para gerar documentação HTML
 3. **Manutenção**: Os comentários facilitam a manutenção e onboarding de novos desenvolvedores
 
-## ✨ Benefícios
+## Benefícios
 
-- ✅ **Onboarding rápido**: Novos desenvolvedores entendem o código rapidamente
-- ✅ **Manutenção facilitada**: Comentários explicam o "porquê", não apenas o "como"
-- ✅ **Autodocumentação**: O código serve como sua própria documentação
-- ✅ **Qualidade**: Código bem comentado indica profissionalismo e cuidado
+- **Onboarding rápido**: Novos desenvolvedores entendem o código rapidamente
+- **Manutenção facilitada**: Comentários explicam o "porquê", não apenas o "como"
+- **Autodocumentação**: O código serve como sua própria documentação
+- **Qualidade**: Código bem comentado indica profissionalismo e cuidado
 
 ---
 

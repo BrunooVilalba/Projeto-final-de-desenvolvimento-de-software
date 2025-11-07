@@ -1,6 +1,6 @@
-# ✅ Checklist de Funcionalidades - EstudaAI
+# Checklist de Funcionalidades - EstudaAI
 
-## 🔐 Autenticação
+## Autenticação
 
 - [x] **Registro de usuário funcionando**
   - Email único validado no banco de dados
@@ -20,7 +20,7 @@
   - Logout funcional
   - Dados carregados automaticamente ao fazer login
 
-## 💾 Persistência de Dados
+## Persistência de Dados
 
 - [x] **Trilhas salvas no banco**
   - Criadas via API Django
@@ -38,7 +38,7 @@
   - Email único no modelo User
   - Relacionamentos corretos (User -> LearningPath -> Step)
 
-## 🎯 Funcionalidades Principais
+## Funcionalidades Principais
 
 ### Trilhas de Aprendizagem
 - [x] Criar trilha via IA (Gemini)
@@ -63,7 +63,7 @@
 - [x] Sidebar de navegação
 - [x] Header com informações do usuário
 
-## 🔧 Integração Frontend-Backend
+## Integração Frontend-Backend
 
 - [x] CORS configurado
 - [x] API service funcionando
@@ -71,30 +71,30 @@
 - [x] Refresh token automático
 - [x] Requisições autenticadas
 
-## 🧪 Testes Realizados
+## Testes Realizados
 
 ### Autenticação
-- ✅ Cadastro com email único
-- ✅ Tentativa de cadastro com email duplicado (retorna erro)
-- ✅ Login com credenciais corretas
-- ✅ Login com credenciais incorretas (retorna erro)
-- ✅ Logout funcional
-- ✅ Persistência de sessão
+- Cadastro com email único
+- Tentativa de cadastro com email duplicado (retorna erro)
+- Login com credenciais corretas
+- Login com credenciais incorretas (retorna erro)
+- Logout funcional
+- Persistência de sessão
 
 ### Dados
-- ✅ Criar trilha salva no banco
-- ✅ Listar trilhas do usuário
-- ✅ Progresso mantido após logout/login
-- ✅ Dados persistem após reiniciar servidores
+- Criar trilha salva no banco
+- Listar trilhas do usuário
+- Progresso mantido após logout/login
+- Dados persistem após reiniciar servidores
 
 ### Funcionalidades
-- ✅ Criar trilha via IA
-- ✅ Marcar etapa como concluída
-- ✅ Deletar trilha
-- ✅ Calcular progresso
-- ✅ Recomendações geradas
+- Criar trilha via IA
+- Marcar etapa como concluída
+- Deletar trilha
+- Calcular progresso
+- Recomendações geradas
 
-## 📝 Validações Implementadas
+## Validações Implementadas
 
 ### Backend
 - Email único no banco de dados
@@ -107,9 +107,9 @@
 - Mensagens de erro claras
 - Tratamento de erros da API
 
-## 🚀 Status Final
+## Status Final
 
-**✅ TODAS AS FUNCIONALIDADES TESTADAS E FUNCIONANDO**
+**TODAS AS FUNCIONALIDADES TESTADAS E FUNCIONANDO**
 
 O sistema está completo e funcional:
 - Autenticação robusta

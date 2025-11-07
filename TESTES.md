@@ -2,13 +2,13 @@
 
 Este documento descreve como executar e entender os testes unitários do projeto EstudaAI.
 
-## 📋 Visão Geral
+## Visão Geral
 
 O projeto possui testes unitários para:
 - **Backend (Django)**: Modelos, views, serializers e lógica de negócio
 - **Frontend (React)**: Componentes, serviços e funções utilitárias
 
-## 🚀 Executando os Testes
+## Executando os Testes
 
 ### Backend (Django)
 
@@ -52,7 +52,7 @@ npm run test:ui
 npm run test:coverage
 ```
 
-## 📁 Estrutura dos Testes
+## Estrutura dos Testes
 
 ### Backend
 
@@ -77,26 +77,26 @@ src/
     └── setup.ts      # Configuração global dos testes
 ```
 
-## 🧪 Cobertura de Testes
+## Cobertura de Testes
 
 ### Backend
 
 Os testes do backend cobrem:
 
-- ✅ **Modelos**: Criação de usuários, trilhas, etapas e sub-etapas
-- ✅ **Autenticação**: Registro, login, perfil e validações
-- ✅ **API de Trilhas**: CRUD completo, toggle de etapas, cálculo de progresso
-- ✅ **Validações**: Email único, senha mínima, campos obrigatórios
+- **Modelos**: Criação de usuários, trilhas, etapas e sub-etapas
+- **Autenticação**: Registro, login, perfil e validações
+- **API de Trilhas**: CRUD completo, toggle de etapas, cálculo de progresso
+- **Validações**: Email único, senha mínima, campos obrigatórios
 
 ### Frontend
 
 Os testes do frontend cobrem:
 
-- ✅ **Componentes**: Login, CreatePath, Register, Dashboard
-- ✅ **Serviços**: API client, autenticação, requisições
-- ✅ **Validações**: Formulários, campos obrigatórios, tratamento de erros
+- **Componentes**: Login, CreatePath, Register, Dashboard
+- **Serviços**: API client, autenticação, requisições
+- **Validações**: Formulários, campos obrigatórios, tratamento de erros
 
-## 📝 Exemplos de Testes
+## Exemplos de Testes
 
 ### Teste de Modelo (Django)
 
@@ -131,7 +131,7 @@ it('deve chamar onLoginSuccess após login bem-sucedido', async () => {
 });
 ```
 
-## 🔍 Comandos Úteis
+## Comandos Úteis
 
 ### Django
 
@@ -160,18 +160,18 @@ npm test -- --inspect-brk
 npm test -- Login.test.tsx
 ```
 
-## 📊 Interpretando Resultados
+## Interpretando Resultados
 
-### Testes Passando ✅
+### Testes Passando
 
 ```
-✅ Login Component
-  ✅ deve renderizar o formulário de login corretamente
-  ✅ deve validar campos obrigatórios
-  ✅ deve chamar onLoginSuccess após login bem-sucedido
+Login Component
+  - deve renderizar o formulário de login corretamente
+  - deve validar campos obrigatórios
+  - deve chamar onLoginSuccess após login bem-sucedido
 ```
 
-### Testes Falhando ❌
+### Testes Falhando
 
 Quando um teste falha, a saída mostra:
 - Nome do teste que falhou
@@ -179,7 +179,7 @@ Quando um teste falha, a saída mostra:
 - Stack trace para debug
 - Valores esperados vs valores recebidos
 
-## 🐛 Debugging
+## Debugging
 
 ### Debug no Django
 
@@ -198,13 +198,13 @@ npm test -- --inspect-brk
 console.log('Valor:', variable);
 ```
 
-## 📚 Recursos Adicionais
+## Recursos Adicionais
 
 - [Documentação do Django Testing](https://docs.djangoproject.com/en/stable/topics/testing/)
 - [React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)
 - [Vitest Documentation](https://vitest.dev/)
 
-## ✨ Boas Práticas
+## Boas Práticas
 
 1. **Teste uma coisa por vez**: Cada teste deve validar uma funcionalidade específica
 2. **Use nomes descritivos**: Nomes de testes devem deixar claro o que está sendo testado
@@ -212,7 +212,7 @@ console.log('Valor:', variable);
 4. **Mocks e stubs**: Use mocks para serviços externos (APIs, banco de dados)
 5. **Limpeza**: Sempre limpe estado entre testes (setup/teardown)
 
-## 🎯 Próximos Passos
+## Próximos Passos
 
 Para aumentar a cobertura de testes:
 

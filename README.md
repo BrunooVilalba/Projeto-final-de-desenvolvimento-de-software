@@ -1,4 +1,4 @@
-# 🎓 EstudaAI - Personalized Learning Paths
+# EstudaAI - Personalized Learning Paths
 
 <div align="center">
 
@@ -9,30 +9,30 @@
 
 **Plataforma inteligente de trilhas de aprendizagem personalizadas com IA**
 
-[Características](#-características) • [Tecnologias](#-tecnologias) • [Instalação](#-instalação) • [Uso](#-uso) • [API](#-api)
+[Características](#características) • [Tecnologias](#tecnologias) • [Instalação](#instalação) • [Uso](#uso) • [API](#api)
 
 </div>
 
 ---
 
-## 📋 Sobre o Projeto
+## Sobre o Projeto
 
 O **EstudaAI** é uma plataforma completa de aprendizado personalizado que utiliza inteligência artificial (Google Gemini) para criar trilhas de aprendizagem customizadas baseadas nos objetivos e perfil do estudante. O sistema permite criar, gerenciar e acompanhar o progresso em trilhas de conhecimento estruturadas.
 
-**📝 Nota**: Todo o código está amplamente comentado de forma profissional, facilitando a compreensão e manutenção do projeto. Os testes unitários garantem a qualidade e confiabilidade do sistema.
+**Nota**: Todo o código está amplamente comentado de forma profissional, facilitando a compreensão e manutenção do projeto. Os testes unitários garantem a qualidade e confiabilidade do sistema.
 
-### 🎯 Principais Funcionalidades
+### Principais Funcionalidades
 
-- ✅ **Autenticação Completa**: Sistema de registro e login com JWT
-- ✅ **Trilhas Personalizadas**: Criação de trilhas via IA baseadas em prompts
-- ✅ **Recomendações Inteligentes**: Sugestões de trilhas baseadas no perfil do usuário
-- ✅ **Acompanhamento de Progresso**: Marcação de etapas concluídas e cálculo automático de progresso
-- ✅ **Persistência de Dados**: Todas as informações são salvas no banco de dados
-- ✅ **Interface Moderna**: Design responsivo e intuitivo com Tailwind CSS
+- **Autenticação Completa**: Sistema de registro e login com JWT
+- **Trilhas Personalizadas**: Criação de trilhas via IA baseadas em prompts
+- **Recomendações Inteligentes**: Sugestões de trilhas baseadas no perfil do usuário
+- **Acompanhamento de Progresso**: Marcação de etapas concluídas e cálculo automático de progresso
+- **Persistência de Dados**: Todas as informações são salvas no banco de dados
+- **Interface Moderna**: Design responsivo e intuitivo com Tailwind CSS
 
 ---
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 ### Frontend
 - **React 19.2.0** - Biblioteca JavaScript para construção de interfaces
@@ -54,7 +54,7 @@ O **EstudaAI** é uma plataforma completa de aprendizado personalizado que utili
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
 ### Pré-requisitos
 
@@ -97,7 +97,7 @@ A API key do Gemini está configurada no arquivo `services/geminiService.ts`. Pa
 
 ---
 
-## 🧪 Testes
+## Testes
 
 O projeto possui testes unitários completos para backend e frontend.
 
@@ -134,7 +134,7 @@ Para mais detalhes sobre os testes, consulte o arquivo [TESTES.md](./TESTES.md).
 
 ---
 
-## 📖 Uso
+## Uso
 
 ### Iniciar o Servidor Backend
 
@@ -162,7 +162,7 @@ O frontend estará disponível em: `http://localhost:3000` ou `http://localhost:
 
 ---
 
-## 🔐 Autenticação
+## Autenticação
 
 ### Registro de Usuário
 
@@ -180,14 +180,14 @@ O frontend estará disponível em: `http://localhost:3000` ou `http://localhost:
 
 ### Persistência de Dados
 
-- ✅ Todas as trilhas são salvas no banco de dados Django
-- ✅ Progresso é mantido entre sessões
-- ✅ Ao fazer logout e login novamente, todas as trilhas são recuperadas
-- ✅ Dados persistem mesmo após reiniciar os servidores
+- Todas as trilhas são salvas no banco de dados Django
+- Progresso é mantido entre sessões
+- Ao fazer logout e login novamente, todas as trilhas são recuperadas
+- Dados persistem mesmo após reiniciar os servidores
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Autenticação
 
@@ -224,7 +224,7 @@ curl -X GET http://localhost:8000/api/learning-paths/ \
 
 ---
 
-## 🗂️ Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 estudaai---personalized-learning-paths-2/
@@ -264,7 +264,7 @@ estudaai---personalized-learning-paths-2/
 
 ---
 
-## 🎨 Funcionalidades Detalhadas
+## Funcionalidades Detalhadas
 
 ### 1. Criação de Trilhas com IA
 
@@ -299,14 +299,14 @@ estudaai---personalized-learning-paths-2/
 
 ---
 
-## 🔒 Segurança
+## Segurança
 
-- ✅ Autenticação JWT com tokens de acesso e refresh
-- ✅ Validação de email único no banco de dados
-- ✅ Senhas com hash seguro (Django)
-- ✅ CORS configurado para desenvolvimento
-- ✅ Validação de dados no backend e frontend
-- ⚠️ **Nota**: Para produção, configure:
+- Autenticação JWT com tokens de acesso e refresh
+- Validação de email único no banco de dados
+- Senhas com hash seguro (Django)
+- CORS configurado para desenvolvimento
+- Validação de dados no backend e frontend
+- **Nota**: Para produção, configure:
   - HTTPS
   - SECRET_KEY seguro
   - DEBUG = False
@@ -314,7 +314,7 @@ estudaai---personalized-learning-paths-2/
 
 ---
 
-## 🧪 Testes
+## Testes
 
 ### Verificar se o Backend está funcionando
 
@@ -338,7 +338,7 @@ curl http://localhost:8000/api/learning-paths/
 
 ---
 
-## 📝 Scripts Disponíveis
+## Scripts Disponíveis
 
 ### Backend (Django)
 
@@ -360,7 +360,7 @@ npm run preview  # Preview do build
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Problema: Email já cadastrado
 
@@ -380,7 +380,7 @@ npm run preview  # Preview do build
 
 ---
 
-## 🤝 Contribuindo
+## Contribuindo
 
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
@@ -390,19 +390,19 @@ npm run preview  # Preview do build
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 
 Desenvolvido Miqueias Saldanha.
 
 ---
 
-## 🔗 Links Úteis
+## Links Úteis
 
 - [Documentação Django](https://docs.djangoproject.com/)
 - [Documentação React](https://react.dev/)
@@ -413,6 +413,6 @@ Desenvolvido Miqueias Saldanha.
 
 <div align="center">
 
-**⭐ Se este projeto foi útil, considere dar uma estrela! ⭐**
+**Se este projeto foi útil, considere dar uma estrela!**
 
 </div>
