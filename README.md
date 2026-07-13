@@ -413,6 +413,5 @@ Desenvolvido Miqueias Saldanha.
 
 <div align="center">
 
-**⭐ Se este projeto foi útil, considere dar uma estrela! ⭐**
 
 </div>
