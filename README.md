@@ -410,8 +410,3 @@ Desenvolvido Miqueias Saldanha.
 - [Documentação Google Gemini](https://ai.google.dev/docs)
 
 ---
-
-<div align="center">
-
-
-</div>
